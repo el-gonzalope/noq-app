@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { SpotifyAuth } from './components/SpotifyAuth';
 import { UserProfile } from './components/UserProfile';
-import { Music, Shield, Zap, Users, Globe, CheckCircle } from 'lucide-react';
+import { Shield, Zap, Users, Globe, CheckCircle } from 'lucide-react';
 import { Button } from './components/ui/button';
 
 const Index = () => {
@@ -40,7 +40,7 @@ const Index = () => {
     setIsLoading(false);
   };
 
-  const handleAuthSuccess = (userData: any) => {
+  const handleAuthSuccess = (userData: Record<string, unknown>) => {
     setUser(userData);
   };
 
@@ -187,7 +187,7 @@ const Index = () => {
             <div className="flex justify-center mb-8">
               <div className="relative">
                 <img 
-                  src="/lovable-uploads/ac43e0a7-a1d6-409e-865d-2f90f6fddaf8.png" 
+                  src="/Users/gonzalo/noq-app/images/noq.png" 
                   alt="NoQ Logo" 
                   className="w-32 h-32 object-contain"
                 />
