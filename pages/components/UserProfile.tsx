@@ -2,7 +2,10 @@ import React from 'react';
 import { Button } from './ui/button';
 
 type Props = {
-  user: any;
+  user: {
+    display_name: string;
+    email: string;
+  };
   onLogout: () => void;
 };
 

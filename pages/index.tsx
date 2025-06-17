@@ -5,7 +5,7 @@ import { Shield, Zap, Users, Globe, CheckCircle } from 'lucide-react';
 import { Button } from './components/ui/button';
 
 const Index = () => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<{ display_name: string; email: string } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [language, setLanguage] = useState<'en' | 'es'>('en');
 
@@ -40,8 +40,8 @@ const Index = () => {
     setIsLoading(false);
   };
 
-  const handleAuthSuccess = (userData: Record<string, unknown>) => {
-    setUser(userData);
+  const handleAuthSuccess = (userData: { display_name: string; email: string }) => {
+  setUser(userData);
   };
 
   const handleLogout = () => {
