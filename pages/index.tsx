@@ -9,15 +9,24 @@ const Index = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [language, setLanguage] = useState<'en' | 'es'>('en');
 
-  useEffect(() => {
-    // Check if user is already authenticated
+useEffect(() => {
+  // Verifica si hay token en el hash (viene desde /callback)
+  if (typeof window !== 'undefined' && window.location.hash.includes('access_token')) {
+    const params = new URLSearchParams(window.location.hash.substring(1));
+    const token = params.get('access_token');
+    if (token) {
+      localStorage.setItem('spotify_access_token', token);
+      window.history.replaceState({}, document.title, '/'); // Limpia el hash de la URL
+      fetchUserProfile(token);
+    }
+  } else {
     const token = localStorage.getItem('spotify_access_token');
     if (token) {
       fetchUserProfile(token);
-    } else {
-      setIsLoading(false);
     }
-  }, []);
+  }
+}, []);
+
 
   const fetchUserProfile = async (token: string) => {
     try {
@@ -40,9 +49,6 @@ const Index = () => {
     setIsLoading(false);
   };
 
-  const handleAuthSuccess = (userData: { display_name: string; email: string }) => {
-  setUser(userData);
-  };
 
   const handleLogout = () => {
     localStorage.removeItem('spotify_access_token');
@@ -203,7 +209,7 @@ const Index = () => {
             </p>
 
             <div className="mb-16">
-              <SpotifyAuth onAuthSuccess={handleAuthSuccess} />
+              <SpotifyAuth/>
             </div>
           </div>
         </div>
