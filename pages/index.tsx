@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { SpotifyAuth } from './components/SpotifyAuth';
-import { UserProfile } from './components/UserProfile';
+import { SpotifyAuth } from '../components/SpotifyAuth';
+import { UserProfile } from '../components/UserProfile';
 import { Shield, Zap, Users, Globe, CheckCircle } from 'lucide-react';
-import { Button } from './components/ui/button';
+import { Button } from '../components/ui/button';
 
 const Index = () => {
   const [user, setUser] = useState<{ display_name: string; email: string } | null>(null);
@@ -160,21 +160,17 @@ const Index = () => {
       <div className="absolute top-4 right-4 z-10">
         <div className="flex bg-white/10 rounded-full p-1">
           <Button
-            variant={language === 'en' ? 'default' : 'ghost'}
-            size="sm"
-            onClick={() => setLanguage('en')}
-            className={`rounded-full px-4 ${language === 'en' ? 'bg-green-500 text-black' : 'text-white hover:bg-white/20'}`}
-          >
-            EN
-          </Button>
-          <Button
-            variant={language === 'es' ? 'default' : 'ghost'}
-            size="sm"
-            onClick={() => setLanguage('es')}
-            className={`rounded-full px-4 ${language === 'es' ? 'bg-green-500 text-black' : 'text-white hover:bg-white/20'}`}
-          >
-            ES
-          </Button>
+           onClick={() => setLanguage('en')}
+           className={`rounded-full px-4 ${language === 'en' ? 'bg-green-500 text-black' : 'text-white hover:bg-white/20'}`}
+           >
+           EN
+           </Button>
+          <<Button
+           onClick={() => setLanguage('es')}
+           className={`rounded-full px-4 ${language === 'es' ? 'bg-green-500 text-black' : 'text-white hover:bg-white/20'}`}
+           >
+           ES
+           </Button>
         </div>
       </div>
 
