@@ -183,7 +183,7 @@ const Index = () => {
             <div className="flex justify-center mb-8">
               <div className="relative">
                 <img 
-                  src="/Users/gonzalo/noq-app/images/noq.png" 
+                  src="/images/noq-logo.png"
                   alt="NoQ Logo" 
                   className="w-32 h-32 object-contain"
                 />
