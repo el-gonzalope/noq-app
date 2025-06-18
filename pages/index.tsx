@@ -29,33 +29,48 @@ useEffect(() => {
 
 
   const fetchUserProfile = async (token: string) => {
-    try {
-      const response = await fetch('https://api.spotify.com/v1/me', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-      
-      if (response.ok) {
-        const userData = await response.json();
-        setUser(userData);
-      } else {
-        localStorage.removeItem('spotify_access_token');
-      }
-    } catch (error) {
-      console.error('Error fetching user profile:', error);
+  try {
+    const response = await fetch('https://api.spotify.com/v1/me', {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    if (response.ok) {
+      const userData = await response.json();
+      setUser(userData);
+    } else {
+      console.error('Failed to fetch user profile');
       localStorage.removeItem('spotify_access_token');
     }
+  } catch (error) {
+    console.error('Error fetching user profile:', error);
+    localStorage.removeItem('spotify_access_token');
+  } finally {
     setIsLoading(false);
-  };
-
+  }
+};
 
   const handleLogout = () => {
     localStorage.removeItem('spotify_access_token');
     localStorage.removeItem('spotify_refresh_token');
     setUser(null);
   };
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-white text-lg">Cargando...</div>
+      </div>
+    );
+  }
 
+  if (user) {
+    return <UserProfile user={user} onLogout={handleLogout} />;
+  }
+
+  // 🔚 Si no está cargando y no hay usuario → muestra botón
+  return <SpotifyAuth />;
+};
   const content = {
     en: {
       hero: {
