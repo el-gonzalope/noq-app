@@ -165,7 +165,7 @@ const Index = () => {
            >
            EN
            </Button>
-          <<Button
+          <Button
            onClick={() => setLanguage('es')}
            className={`rounded-full px-4 ${language === 'es' ? 'bg-green-500 text-black' : 'text-white hover:bg-white/20'}`}
            >
