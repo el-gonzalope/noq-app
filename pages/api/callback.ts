@@ -34,13 +34,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Redirect to frontend with tokens
     res.redirect(`/?access_token=${access_token}&refresh_token=${refresh_token}`);
     // added error handling fix
-   } catch (error) {
-    if (typeof error === 'object' && error !== null && 'message' in error) {
-      console.error("Error exchanging code for token:", (error as any).message);
-    } else {
-      console.error("Unknown error exchanging code for token:", error);
-    }
-    res.status(500).send("Token exchange failed");
+  } catch (error) {
+  if (error instanceof Error) {
+    console.error("Error exchanging code for token:", error.message);
+  } else {
+    console.error("Unknown error exchanging code for token:", error);
   }
+  res.status(500).send("Token exchange failed");
+}
+
 }
 
