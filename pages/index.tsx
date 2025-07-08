@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { SpotifyAuth } from '../components/SpotifyAuth';
-import { UserProfile } from '../components/UserProfile';
 import { Shield, Zap, Users, Globe, CheckCircle } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { ArtistAccessList } from '../components/ArtistAccessList';
