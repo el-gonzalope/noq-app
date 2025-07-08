@@ -9,9 +9,10 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     return res.status(500).send('Missing Spotify credentials');
   }
 
-  const authURL = `https://accounts.spotify.com/authorize?response_type=token&client_id=${clientId}&scope=${encodeURIComponent(
-    scope
-  )}&redirect_uri=${encodeURIComponent(redirectUri)}`;
+ const authURL = `https://accounts.spotify.com/authorize?response_type=code&client_id=${clientId}&scope=${encodeURIComponent(
+  scope
+)}&redirect_uri=${encodeURIComponent(redirectUri)}`;
+
 
   res.redirect(authURL);
 }
