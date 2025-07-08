@@ -62,7 +62,7 @@ const data: { artists: { items: Artist[] } } = await res.json();
           placeholder="Nombre del artista (ej. Deftones)"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full p-3 text-black rounded mb-2"
+          className="w-full p-2 bg-black border border-gray-600 rounded text-white"
         />
         <button
           onClick={searchArtist}
