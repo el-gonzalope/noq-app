@@ -1,29 +1,41 @@
-import { useEffect } from 'react';
-import { useRouter } from 'next/router';
+// pages/api/callback.ts
+import type { NextApiRequest, NextApiResponse } from 'next';
+import axios from 'axios';
 
-const Callback = () => {
-  const router = useRouter();
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const code = req.query.code as string;
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const hash = window.location.hash;
-      if (hash.includes('access_token')) {
-        const params = new URLSearchParams(hash.substring(1));
-        const token = params.get('access_token');
+  if (!code) {
+    return res.status(400).send("Missing code parameter");
+  }
 
-        if (token) {
-          localStorage.setItem('spotify_access_token', token);
-          router.push('/');
-        }
-      }
-    }
-  }, [router]);
+  const client_id = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID!;
+  const client_secret = process.env.SPOTIFY_CLIENT_SECRET!;
+  const redirect_uri = process.env.NEXT_PUBLIC_REDIRECT_URI!;
 
-  return (
-    <div className="min-h-screen bg-black text-white flex items-center justify-center">
-      <p>Conectando con Spotify...</p>
-    </div>
-  );
-};
+  const authOptions = {
+    method: 'post',
+    url: 'https://accounts.spotify.com/api/token',
+    data: new URLSearchParams({
+      grant_type: 'authorization_code',
+      code,
+      redirect_uri,
+    }).toString(),
+    headers: {
+      'Authorization': 'Basic ' + Buffer.from(`${client_id}:${client_secret}`).toString('base64'),
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+  };
 
-export default Callback;
+  try {
+    const response = await axios(authOptions);
+    const { access_token, refresh_token } = response.data;
+
+    // Redirect to frontend with tokens
+    res.redirect(`/?access_token=${access_token}&refresh_token=${refresh_token}`);
+  } catch (error: any) {
+    console.error("Error exchanging code for token:", error.response?.data || error.message);
+    res.status(500).send("Token exchange failed");
+  }
+}
+
