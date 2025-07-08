@@ -74,24 +74,41 @@ const Index = () => {
 
   const t = content[language];
 
-  useEffect(() => {
-    if (typeof window !== 'undefined' && window.location.hash.includes('access_token')) {
+ useEffect(() => {
+  if (typeof window !== 'undefined') {
+    // First: check query string
+    const urlParams = new URLSearchParams(window.location.search);
+    const tokenFromQuery = urlParams.get('access_token');
+
+    if (tokenFromQuery) {
+      localStorage.setItem('spotify_access_token', tokenFromQuery);
+      window.history.replaceState({}, document.title, '/'); // clean URL
+      fetchUserProfile(tokenFromQuery);
+      return;
+    }
+
+    // Fallback: check hash (if still used anywhere)
+    if (window.location.hash.includes('access_token')) {
       const params = new URLSearchParams(window.location.hash.substring(1));
       const token = params.get('access_token');
       if (token) {
         localStorage.setItem('spotify_access_token', token);
         window.history.replaceState({}, document.title, '/');
         fetchUserProfile(token);
-      }
-    } else {
-      const token = localStorage.getItem('spotify_access_token');
-      if (token) {
-        fetchUserProfile(token);
-      } else {
-        setIsLoading(false);
+        return;
       }
     }
-  }, []);
+
+    // If already stored
+    const storedToken = localStorage.getItem('spotify_access_token');
+    if (storedToken) {
+      fetchUserProfile(storedToken);
+    } else {
+      setIsLoading(false);
+    }
+  }
+}, []);
+
 
   const fetchUserProfile = async (token: string) => {
     try {
