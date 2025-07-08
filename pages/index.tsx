@@ -165,7 +165,7 @@ const Index = () => {
 
       const [token, setToken] = useState('');
 
-useEffect(() => {
+useEffect(() = {
   if (typeof window !== 'undefined') {
     const storedToken = localStorage.getItem('spotify_access_token');
     if (storedToken) setToken(storedToken);
