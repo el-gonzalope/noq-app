@@ -3,6 +3,8 @@ import { SpotifyAuth } from '../components/SpotifyAuth';
 import { UserProfile } from '../components/UserProfile';
 import { Shield, Zap, Users, Globe, CheckCircle } from 'lucide-react';
 import { Button } from '../components/ui/button';
+import { ArtistAccessList } from '../components/ArtistAccessList';
+
 
 const Index = () => {
   const [user, setUser] = useState<{ display_name: string; email: string } | null>(null);
@@ -150,7 +152,7 @@ const Index = () => {
     );
   }
 
-  if (user) {
+ if (user) {
   return (
     <div className="min-h-screen bg-black text-white p-8">
       <UserProfile user={user} onLogout={handleLogout} />
@@ -160,9 +162,12 @@ const Index = () => {
           Cerrar sesión
         </Button>
       </div>
+
+      <ArtistAccessList token={localStorage.getItem('spotify_access_token') || ''} />
     </div>
   );
 }
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-green-900">
