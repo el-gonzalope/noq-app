@@ -5,7 +5,8 @@ const TARGET_ARTISTS = [
   { name: "Deftones", id: "6Ghvu1VvMGScGpOUJBAHNH" },
   { name: "NCT DREAM", id: "1gBUSTR3TyDdTVFIaQnc02" },
   { name: "Queens of the Stone Age", id: "4pejUc4iciQfgdX6OKulQn" },
-  { name: "Taylor Swift", id: "06HL4z0CvFAxyc27GXpf02" }
+  { name: "Red Hot Chili Peppers", id: "0L8ExT028jH3ddEcZwqJJ5" }
+  { name: "31 Minutos", id: "1EgVsKobLzbNgILxx9wrVG" }
 ];
 
 const COUNTRIES = [
