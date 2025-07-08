@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { CheckCircle, Clock, Globe } from 'lucide-react';
 
 const TARGET_ARTISTS = [
+  { name: "WOS", id:"5YCc6xS5Gpj3EkaYGdjyNK"},
   { name: "Deftones", id: "6Ghvu1VvMGScGpOUJBAHNH" },
   { name: "NCT DREAM", id: "1gBUSTR3TyDdTVFIaQnc02" },
   { name: "Queens of the Stone Age", id: "4pejUc4iciQfgdX6OKulQn" },
