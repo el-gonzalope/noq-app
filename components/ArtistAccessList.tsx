@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import { CheckCircle, Clock, Globe } from 'lucide-react';
 
 const TARGET_ARTISTS = [
-  "Deftones",
-  "NCT Dream",
-  "Queens of the Stone Age",
-  "Taylor Swift"
+  { name: "Deftones", id: "6Ghvu1VvMGScGpOUJBAHNH" },
+  { name: "NCT DREAM", id: "1gBUSTR3TyDdTVFIaQnc02" },
+  { name: "Queens of the Stone Age", id: "4pejUc4iciQfgdX6OKulQn" },
+  { name: "Taylor Swift", id: "06HL4z0CvFAxyc27GXpf02" }
 ];
 
 const COUNTRIES = [
@@ -22,49 +22,31 @@ export const ArtistAccessList = ({ token }: ArtistAccessListProps) => {
   const [selectedCountry, setSelectedCountry] = useState<string>("Chile");
 
   useEffect(() => {
-    fetchTopArtists();
-  }, []);
-
-  useEffect(() => {
-    if (topArtistIDs.size > 0) {
-      checkUserArtistPresence();
-    }
-  }, [topArtistIDs]);
-
-  const fetchTopArtists = async () => {
-    const res = await fetch(`https://api.spotify.com/v1/me/top/artists?time_range=long_term&limit=50`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-
-    if (res.ok) {
-      const data = await res.json();
-      const ids = new Set<string>(data.items.map((artist: { id: string }) => artist.id));
-      setTopArtistIDs(ids);
-    }
-  };
-
-  const checkUserArtistPresence = async () => {
-    const results: { name: string; id: string; access: "immediate" | "none" }[] = [];
-
-    for (const artistName of TARGET_ARTISTS) {
-      const search = await fetch(`https://api.spotify.com/v1/search?q=${encodeURIComponent(artistName)}&type=artist&limit=1`, {
-        headers: { Authorization: `Bearer ${token}` }
+    const fetchTopArtists = async () => {
+      const res = await fetch(`https://api.spotify.com/v1/me/top/artists?time_range=long_term&limit=50`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       });
 
-      const result = await search.json();
-      const artist = result.artists.items[0];
+      if (res.ok) {
+        const data = await res.json();
+        const ids = new Set<string>(data.items.map((artist: { id: string }) => artist.id));
+        setTopArtistIDs(ids);
+      }
+    };
 
-      if (!artist) continue;
+    fetchTopArtists();
+  }, [token]);
 
-      const access = topArtistIDs.has(artist.id) ? "immediate" : "none";
-
-      results.push({ name: artist.name, id: artist.id, access });
-    }
-
+  useEffect(() => {
+    const results = TARGET_ARTISTS.map(({ name, id }) => ({
+      name,
+      id,
+      access: topArtistIDs.has(id) ? "immediate" : "none"
+    }));
     setMatchedArtists(results);
-  };
+  }, [topArtistIDs]);
 
   return (
     <div className="max-w-3xl mx-auto mt-12 text-white">
