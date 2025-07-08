@@ -40,7 +40,7 @@ export const ArtistAccessList = ({ token }: ArtistAccessListProps) => {
 
     if (res.ok) {
       const data = await res.json();
-      const ids = new Set(data.items.map((artist: { id: string }) => artist.id));
+      const ids = new Set<string>(data.items.map((artist: { id: string }) => artist.id));
       setTopArtistIDs(ids);
     }
   };
