@@ -78,7 +78,6 @@ const Index = () => {
 
  useEffect(() => {
   if (typeof window !== 'undefined') {
-    // First: check query string
     const urlParams = new URLSearchParams(window.location.search);
     const tokenFromQuery = urlParams.get('access_token');
 
@@ -140,6 +139,14 @@ const Index = () => {
     localStorage.removeItem('spotify_refresh_token');
     setUser(null);
   };
+const [token, setToken] = useState('');
+
+useEffect(() => {
+  if (typeof window !== 'undefined') {
+    const storedToken = localStorage.getItem('spotify_access_token');
+    if (storedToken) setToken(storedToken);
+  }
+}, []);
 
   if (isLoading) {
     return (
@@ -152,26 +159,22 @@ const Index = () => {
     );
   }
 
- if (user) {
+if (user) {
   return (
     <div className="min-h-screen bg-black text-white p-8">
-      <UserProfile user={user} onLogout={handleLogout} />
-
-      <div className="text-center mt-8">
+      <div className="flex justify-between items-start mb-8">
+        <div>
+          <p className="text-lg font-semibold">Welcome, {user.display_name}</p>
+          <p className="text-sm text-gray-400">Email: {user.email}</p>
+        </div>
         <Button onClick={handleLogout} className="bg-red-600 text-white hover:bg-red-700">
           Cerrar sesión
         </Button>
       </div>
 
-      const [token, setToken] = useState('');
-
-useEffect(() = {
-  if (typeof window !== 'undefined') {
-    const storedToken = localStorage.getItem('spotify_access_token');
-    if (storedToken) setToken(storedToken);
-  }
-}, []);
-{token && <ArtistAccessList token={token} />}
+      <div className="mt-12">
+        {token && <ArtistAccessList token={token} />}
+      </div>
     </div>
   );
 }
