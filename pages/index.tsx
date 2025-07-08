@@ -7,70 +7,8 @@ import { Button } from '../components/ui/button';
 const Index = () => {
   const [user, setUser] = useState<{ display_name: string; email: string } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [language, setLanguage] = useState<'en' | 'es'>('en');
+  const [language, setLanguage] = useState<'en' | 'es'>('es'); // Spanish as default
 
-useEffect(() => {
-  // Verifica si hay token en el hash (viene desde /callback)
-  if (typeof window !== 'undefined' && window.location.hash.includes('access_token')) {
-    const params = new URLSearchParams(window.location.hash.substring(1));
-    const token = params.get('access_token');
-    if (token) {
-      localStorage.setItem('spotify_access_token', token);
-      window.history.replaceState({}, document.title, '/'); // Limpia el hash de la URL
-      fetchUserProfile(token);
-    }
-  } else {
-    const token = localStorage.getItem('spotify_access_token');
-    if (token) {
-      fetchUserProfile(token);
-    }
-  }
-}, []);
-
-
-  const fetchUserProfile = async (token: string) => {
-  try {
-    const response = await fetch('https://api.spotify.com/v1/me', {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-    });
-
-    if (response.ok) {
-      const userData = await response.json();
-      setUser(userData);
-    } else {
-      console.error('Failed to fetch user profile');
-      localStorage.removeItem('spotify_access_token');
-    }
-  } catch (error) {
-    console.error('Error fetching user profile:', error);
-    localStorage.removeItem('spotify_access_token');
-  } finally {
-    setIsLoading(false);
-  }
-};
-
-  const handleLogout = () => {
-    localStorage.removeItem('spotify_access_token');
-    localStorage.removeItem('spotify_refresh_token');
-    setUser(null);
-  };
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="text-white text-lg">Cargando...</div>
-      </div>
-    );
-  }
-
-  if (user) {
-    return <UserProfile user={user} onLogout={handleLogout} />;
-  }
-
-  // 🔚 Si no está cargando y no hay usuario → muestra botón
-  return <SpotifyAuth />;
-};
   const content = {
     en: {
       hero: {
@@ -82,21 +20,9 @@ useEffect(() => {
       features: {
         title: "How NoQ Works",
         items: [
-          {
-            icon: Shield,
-            title: "Anti-Bot Protection",
-            description: "Machine learning algorithms analyze listening patterns to distinguish real fans from automated buyers."
-          },
-          {
-            icon: Zap,
-            title: "Smart Queue Ranking",
-            description: "Your position is determined by genuine engagement with the artist, not clicking speed or luck."
-          },
-          {
-            icon: Users,
-            title: "Fan Priority System",
-            description: "Dedicated listeners get early access, ensuring tickets reach those who truly appreciate the music."
-          }
+          { icon: Shield, title: "Anti-Bot Protection", description: "Machine learning algorithms analyze listening patterns to distinguish real fans from automated buyers." },
+          { icon: Zap, title: "Smart Queue Ranking", description: "Your position is determined by genuine engagement with the artist, not clicking speed or luck." },
+          { icon: Users, title: "Fan Priority System", description: "Dedicated listeners get early access, ensuring tickets reach those who truly appreciate the music." }
         ]
       },
       benefits: {
@@ -124,21 +50,9 @@ useEffect(() => {
       features: {
         title: "Cómo Funciona NoQ",
         items: [
-          {
-            icon: Shield,
-            title: "Protección Anti-Bot",
-            description: "Algoritmos de aprendizaje automático analizan patrones de escucha para distinguir fans reales de compradores automatizados."
-          },
-          {
-            icon: Zap,
-            title: "Clasificación Inteligente de Cola",
-            description: "Tu posición se determina por el compromiso genuino con el artista, no por velocidad de clic o suerte."
-          },
-          {
-            icon: Users,
-            title: "Sistema de Prioridad de Fans",
-            description: "Los oyentes dedicados obtienen acceso temprano, asegurando que las entradas lleguen a quienes realmente aprecian la música."
-          }
+          { icon: Shield, title: "Protección Anti-Bot", description: "Algoritmos de aprendizaje automático analizan patrones de escucha para distinguir fans reales de compradores automatizados." },
+          { icon: Zap, title: "Clasificación Inteligente de Cola", description: "Tu posición se determina por el compromiso genuino con el artista, no por velocidad de clic o suerte." },
+          { icon: Users, title: "Sistema de Prioridad de Fans", description: "Los oyentes dedicados obtienen acceso temprano, asegurando que las entradas lleguen a quienes realmente aprecian la música." }
         ]
       },
       benefits: {
@@ -160,6 +74,54 @@ useEffect(() => {
 
   const t = content[language];
 
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.location.hash.includes('access_token')) {
+      const params = new URLSearchParams(window.location.hash.substring(1));
+      const token = params.get('access_token');
+      if (token) {
+        localStorage.setItem('spotify_access_token', token);
+        window.history.replaceState({}, document.title, '/');
+        fetchUserProfile(token);
+      }
+    } else {
+      const token = localStorage.getItem('spotify_access_token');
+      if (token) {
+        fetchUserProfile(token);
+      } else {
+        setIsLoading(false);
+      }
+    }
+  }, []);
+
+  const fetchUserProfile = async (token: string) => {
+    try {
+      const response = await fetch('https://api.spotify.com/v1/me', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const userData = await response.json();
+        setUser(userData);
+      } else {
+        console.error('Failed to fetch user profile');
+        localStorage.removeItem('spotify_access_token');
+      }
+    } catch (error) {
+      console.error('Error fetching user profile:', error);
+      localStorage.removeItem('spotify_access_token');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('spotify_access_token');
+    localStorage.removeItem('spotify_refresh_token');
+    setUser(null);
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
@@ -180,51 +142,31 @@ useEffect(() => {
       {/* Language Toggle */}
       <div className="absolute top-4 right-4 z-10">
         <div className="flex bg-white/10 rounded-full p-1">
-          <Button
-           onClick={() => setLanguage('en')}
-           className={`rounded-full px-4 ${language === 'en' ? 'bg-green-500 text-black' : 'text-white hover:bg-white/20'}`}
-           >
-           EN
-           </Button>
-          <Button
-           onClick={() => setLanguage('es')}
-           className={`rounded-full px-4 ${language === 'es' ? 'bg-green-500 text-black' : 'text-white hover:bg-white/20'}`}
-           >
-           ES
-           </Button>
+          <Button onClick={() => setLanguage('en')} className={`rounded-full px-4 ${language === 'en' ? 'bg-green-500 text-black' : 'text-white hover:bg-white/20'}`}>EN</Button>
+          <Button onClick={() => setLanguage('es')} className={`rounded-full px-4 ${language === 'es' ? 'bg-green-500 text-black' : 'text-white hover:bg-white/20'}`}>ES</Button>
         </div>
       </div>
 
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(34,197,94,0.1),transparent_70%)]"></div>
-        
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-32">
           <div className="text-center">
             <div className="flex justify-center mb-8">
               <div className="relative">
-                <img 
-                  src="/images/noq-logo.png"
-                  alt="NoQ Logo" 
-                  className="w-32 h-32 object-contain"
-                />
+                <img src="/images/noq-logo.png" alt="NoQ Logo" className="w-32 h-32 object-contain" />
                 <div className="absolute -top-2 -right-2 w-6 h-6 bg-white rounded-full flex items-center justify-center">
                   <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
                 </div>
               </div>
             </div>
-            
             <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 tracking-tight">
               {t.hero.title}
               <span className="text-green-400 block">{t.hero.titleAccent}</span>
             </h1>
-            
-            <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed">
-              {t.hero.subtitle}
-            </p>
-
+            <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed">{t.hero.subtitle}</p>
             <div className="mb-16">
-              <SpotifyAuth/>
+              <SpotifyAuth />
             </div>
           </div>
         </div>
@@ -240,9 +182,7 @@ useEffect(() => {
                 <feature.icon className="w-8 h-8 text-green-400" />
               </div>
               <h3 className="text-xl font-semibold text-white mb-4">{feature.title}</h3>
-              <p className="text-gray-400 leading-relaxed">
-                {feature.description}
-              </p>
+              <p className="text-gray-400 leading-relaxed">{feature.description}</p>
             </div>
           ))}
         </div>
@@ -269,12 +209,7 @@ useEffect(() => {
           <div className="text-center">
             <div className="flex justify-center items-center space-x-2 mb-4">
               <Globe className="w-5 h-5 text-green-400" />
-              <a 
-                href="https://www.getnoq.cl" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-green-400 hover:text-green-300 transition-colors"
-              >
+              <a href="https://www.getnoq.cl" target="_blank" rel="noopener noreferrer" className="text-green-400 hover:text-green-300 transition-colors">
                 {t.footer.website}
               </a>
             </div>
