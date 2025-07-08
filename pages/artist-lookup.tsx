@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 const ArtistLookupPage = () => {
   const [token, setToken] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<ArtistResult | null>(null);
   const [error, setError] = useState('');
 
   useEffect(() => {
