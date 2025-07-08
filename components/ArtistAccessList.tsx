@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { CheckCircle, Clock, Globe } from 'lucide-react';
-import { Button } from './ui/button';
 
 const TARGET_ARTISTS = [
   "Deftones",
@@ -41,7 +40,7 @@ export const ArtistAccessList = ({ token }: ArtistAccessListProps) => {
 
     if (res.ok) {
       const data = await res.json();
-      const ids = new Set(data.items.map((artist: any) => artist.id));
+      const ids = new Set(data.items.map((artist: { id: string }) => artist.id));
       setTopArtistIDs(ids);
     }
   };
