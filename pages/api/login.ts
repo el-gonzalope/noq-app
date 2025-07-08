@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   const scope = 'user-read-email user-read-private user-top-read';
-  const clientId = process.env.SPOTIFY_CLIENT_ID;
+  const clientId = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID;
   const redirectUri = process.env.NEXT_PUBLIC_REDIRECT_URI;
 
   if (!clientId || !redirectUri) {
