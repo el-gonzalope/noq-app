@@ -23,14 +23,23 @@ const ArtistLookupPage = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      const data = await res.json();
+      interface Artist {
+  name: string;
+  id: string;
+  images: { url: string }[];
+  followers: { total: number };
+  popularity: number;
+  genres: string[];
+}
+
+const data: { artists: { items: Artist[] } } = await res.json();
       if (data.artists.items.length === 0) {
         setError('No se encontró ningún artista con ese nombre.');
         return;
       }
 
       setResult(data.artists.items[0]);
-    } catch (err) {
+    } catch {
       setError('Error al buscar el artista.');
     }
   };
