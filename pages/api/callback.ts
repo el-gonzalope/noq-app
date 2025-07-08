@@ -33,7 +33,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // Redirect to frontend with tokens
     res.redirect(`/?access_token=${access_token}&refresh_token=${refresh_token}`);
-  } catch (error: any) {
+  } catch (error) {
     console.error("Error exchanging code for token:", error.response?.data || error.message);
     res.status(500).send("Token exchange failed");
   }
