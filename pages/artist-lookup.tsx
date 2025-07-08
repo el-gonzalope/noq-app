@@ -1,11 +1,19 @@
 // pages/artist-lookup.tsx
 
 import { useEffect, useState } from 'react';
+interface ArtistResult {
+  name: string;
+  id: string;
+  images: { url: string }[];
+  genres: string[];
+  popularity: number;
+  followers: { total: number };
+}
 
 const ArtistLookupPage = () => {
   const [token, setToken] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
-  const [result, setResult] = useState<ArtistResult | null>(null);
+  const [result, setResult] = useState<ArtistResult| null>(null);
   const [error, setError] = useState('');
 
   useEffect(() => {
