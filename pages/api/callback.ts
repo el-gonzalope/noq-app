@@ -1,5 +1,3 @@
-// pages/callback.tsx
-
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 
@@ -15,7 +13,6 @@ const Callback = () => {
 
         if (token) {
           localStorage.setItem('spotify_access_token', token);
-          // Redirige al home
           router.push('/');
         }
       }
