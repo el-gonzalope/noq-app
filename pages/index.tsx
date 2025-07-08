@@ -134,8 +134,18 @@ const Index = () => {
   }
 
   if (user) {
-    return <UserProfile user={user} onLogout={handleLogout} />;
-  }
+  return (
+    <div className="min-h-screen bg-black text-white p-8">
+      <UserProfile user={user} onLogout={handleLogout} />
+
+      <div className="text-center mt-8">
+        <Button onClick={handleLogout} className="bg-red-600 text-white hover:bg-red-700">
+          Cerrar sesión
+        </Button>
+      </div>
+    </div>
+  );
+}
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-green-900">
