@@ -40,11 +40,12 @@ export const ArtistAccessList = ({ token }: ArtistAccessListProps) => {
   }, [token]);
 
   useEffect(() => {
-    const results = TARGET_ARTISTS.map(({ name, id }) => ({
-      name,
-      id,
-      access: topArtistIDs.has(id) ? "immediate" : "none"
-    }));
+const results: { name: string; id: string; access: "immediate" | "none" }[] =
+  TARGET_ARTISTS.map(({ name, id }) => ({
+    name,
+    id,
+    access: topArtistIDs.has(id) ? "immediate" : "none"
+  }));
     setMatchedArtists(results);
   }, [topArtistIDs]);
 
